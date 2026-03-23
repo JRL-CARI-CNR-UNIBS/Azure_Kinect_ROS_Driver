@@ -1,0 +1,55 @@
+name: humble
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-22.04
+    container:
+      # Using a standard ROS 2 Humble image on Ubuntu Jammy (22.04)
+      image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-desktop-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Azure Kinect SDK (Fast Strategy)
+        run: |
+          # Install basic system dependencies for the SDK
+          sudo apt-get update && sudo apt-get install -y curl libusb-1.0-0 libgl1 libsoundio-dev
+          
+          # 1. Install OpenSSL 1.1 for compatibility
+          # The proprietary Depth Engine binary (from Ubuntu 18.04) strictly requires libssl1.1.
+          # Ubuntu 22.04 ships with OpenSSL 3.0, so we must manually install the older version.
+          curl -sSL http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -o libssl1.1.deb
+          sudo dpkg -i libssl1.1.deb && rm libssl1.1.deb
+          
+          # 2. Extract 18.04 SDK packages
+          # Microsoft does not provide native .deb packages for 22.04.
+          # We extract the 18.04 binaries and manually place them in the system paths.
+          mkdir -p /tmp/k4a_bin && cd /tmp/k4a_bin
+          curl -sSLO https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4/libk4a1.4_1.4.1_amd64.deb
+          curl -sSLO https://packages.microsoft.com/ubuntu/18.04/prod/pool/main/libk/libk4a1.4-dev/libk4a1.4-dev_1.4.1_amd64.deb
+          
+          for f in *.deb; do dpkg-deb -x $f .; done
+          
+          # 3. Deploy binaries and set up symbolic links
+          # We copy headers and libraries to /usr to allow CMake's find_package(k4a) to work.
+          sudo cp -r usr/* /usr/
+          # Ensure the linker finds the Depth Engine without version suffix issues
+          sudo ln -sf /usr/lib/x86_64-linux-gnu/libdepthengine.so.2.0 /usr/lib/x86_64-linux-gnu/libdepthengine.so
+          sudo ldconfig
+          cd - && rm -rf /tmp/k4a_bin
+          
+      - name: build and test
+        uses: ros-tooling/action-ros-ci@v0.4
+        with:
+          package-name: azure_kinect_ros_driver
+          target-ros2-distro: humble
