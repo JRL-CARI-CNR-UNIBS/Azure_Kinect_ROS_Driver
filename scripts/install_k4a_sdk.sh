@@ -46,7 +46,9 @@ sudo ldconfig
 
 # 7. Setup UDEV Rules (Access for non-root users)
 echo "Setting up UDEV rules..."
-sudo cp /usr/lib/x86_64-linux-gnu/libk4a1.4/99-k4a.rules /etc/udev/rules.d/
+sudo wget https://raw.githubusercontent.com/microsoft/Azure-Kinect-Sensor-SDK/develop/scripts/99-k4a.rules -O /etc/udev/rules.d/99-k4a.rules
+# Reload udev rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
 
 cd - && rm -rf "$TEMP_DIR"
 
