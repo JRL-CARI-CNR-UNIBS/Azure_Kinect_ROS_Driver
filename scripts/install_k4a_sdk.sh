@@ -12,9 +12,9 @@ sudo apt-get install -y curl libusb-1.0-0 libgl1 libsoundio-dev libglfw3-dev lib
 
 # 2. Fix OpenSSL 1.1 Compatibility
 # Required by the proprietary Depth Engine binary
-echo "Installing OpenSSL 1.1 legacy support..."
-curl -sSL http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -o /tmp/libssl1.1.deb
-sudo dpkg -i /tmp/libssl1.1.deb && rm /tmp/libssl1.1.deb
+# echo "Installing OpenSSL 1.1 legacy support..."
+# curl -sSL http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -o /tmp/libssl1.1.deb
+# sudo dpkg -i /tmp/libssl1.1.deb && rm /tmp/libssl1.1.deb
 
 # 3. Fix libsoundio 1.1.0 Compatibility
 # Ubuntu 22.04 has version 2.0+, but the SDK expects 1.1.0
