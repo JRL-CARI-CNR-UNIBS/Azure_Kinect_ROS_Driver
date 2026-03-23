@@ -139,7 +139,7 @@ def generate_launch_description():
         description="Delay subordinate camera off master camera by specified amount in usec."),
     launch_ros.actions.Node(
         package='azure_kinect_ros_driver',
-        executable='node',
+        executable='azure_kinect_ros_driver_node',
         output='screen',
         parameters=[
             {'depth_enabled': launch.substitutions.LaunchConfiguration('depth_enabled')},
