@@ -2,9 +2,9 @@ name: humble
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ humble ]
   push:
-    branches: [ main ]
+    branches: [ humble ]
 
 jobs:
   build-and-test:
