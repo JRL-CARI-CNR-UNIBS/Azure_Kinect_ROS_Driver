@@ -1,0 +1,30 @@
+name: humble
+
+on:
+  pull_request:
+    branches: [ humble ]
+  push:
+    branches: [ humble ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-22.04
+    container:
+      # Using a standard ROS 2 Humble image on Ubuntu Jammy (22.04)
+      image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-desktop-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Azure Kinect SDK via Script
+        run: ./scripts/install_k4a_sdk.sh
+          
+      - name: build and test
+        uses: ros-tooling/action-ros-ci@v0.4
+        with:
+          package-name: azure_kinect_ros_driver
+          target-ros2-distro: humble
