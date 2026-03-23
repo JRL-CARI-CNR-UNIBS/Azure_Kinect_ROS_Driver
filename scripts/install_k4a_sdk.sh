@@ -46,7 +46,7 @@ sudo ldconfig
 
 # 7. Setup UDEV Rules (Access for non-root users)
 echo "Setting up UDEV rules..."
-sudo wget https://raw.githubusercontent.com/microsoft/Azure-Kinect-Sensor-SDK/develop/scripts/99-k4a.rules -O /etc/udev/rules.d/99-k4a.rules
+sudo wget -P /etc/udev/rules.d/ https://raw.githubusercontent.com/microsoft/Azure-Kinect-Sensor-SDK/develop/scripts/99-k4a.rules
 # Reload udev rules
 sudo udevadm control --reload-rules && sudo udevadm trigger
 
