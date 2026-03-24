@@ -1,5 +1,5 @@
 # Azure Kinect ROS Driver
-
+[![humble](https://github.com/JRL-CARI-CNR-UNIBS/Azure_Kinect_ROS_Driver/actions/workflows/humble.yml/badge.svg)](https://github.com/JRL-CARI-CNR-UNIBS/Azure_Kinect_ROS_Driver/actions/workflows/humble.yml)
 This project is a node which publishes sensor data from the [Azure Kinect Developer Kit](https://azure.microsoft.com/en-us/services/kinect-dk/) to the [Robot Operating System (ROS)](http://www.ros.org/). Developers working with ROS can use this node to connect an Azure Kinect Developer Kit to an existing ROS installation.
 
 This repository uses the [Azure Kinect Sensor SDK](https://github.com/microsoft/Azure-Kinect-Sensor-SDK) to communicate with the Azure Kinect DK. It supports both Linux and Windows installations of ROS.
